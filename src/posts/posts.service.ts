@@ -6,12 +6,14 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 @Injectable()
 export class PostsService {
   async findAll(paginationDto: PaginationDto) {
+    const { page, limit } = paginationDto;
+
     const { data: posts } = await axios.get(
       'https://jsonplaceholder.typicode.com/posts',
       {
         params: {
-          _limit: paginationDto.limit,
-          _start: paginationDto.offset,
+          _limit: limit || 10,
+          _start: limit * (page - 1),
         },
       },
     );
